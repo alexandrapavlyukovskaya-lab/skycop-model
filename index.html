@@ -74,6 +74,8 @@
   table.cf tr.net td{border-top:3px solid var(--green-dark); background:var(--green-tint); font-weight:800;}
   table.cf tr.run td{background:var(--green-tint); font-weight:700; color:var(--green-dark);}
   table.cf td.neg{color:var(--minus);}
+  .t-note{padding:14px 20px; font-size:16.5px; background:var(--green-tint); border-top:2px solid var(--green-mid); line-height:1.55;}
+  .t-note b{color:var(--green-dark);}
   table.cf td.tot{font-weight:800;}
 
   /* Summary cards */
@@ -109,6 +111,7 @@
   <div class="example">
     <b>This is an example based on 5 cases:</b>
     <ul>
+      <li>the average value of one case is <b>&pound;520</b>;</li>
       <li>all 5 cases are sent to LBA (letter before action);</li>
       <li>1 of them (non-Ryanair) is positive — the airline pays after the letter;</li>
       <li>4 of them go to court (2 non-Ryanair and 2 Ryanair);</li>
@@ -202,6 +205,7 @@
       <tr class="run"><td>Running total</td><td class="neg">−250</td><td class="neg">−250</td><td class="neg">−250</td><td class="neg">−174.6</td><td class="neg">−99.2</td><td>85.27</td><td></td></tr>
     </table>
     </div>
+    <div class="t-note"><b>How "Repay Roland" works:</b> everything the court returns goes fully to Roland &mdash; the court fee (&pound;70) and the legal fee share (&pound;52.5) per won court case &mdash; plus 50% of Skycop&rsquo;s own share (&pound;130 out of &pound;260) per won case. So: M5 = &pound;130; M12 = 70&nbsp;+&nbsp;52.5&nbsp;+&nbsp;130 = &pound;252.5; M14 = the remaining &pound;40.5 of the loan + interest &pound;39.48 + financing fee &pound;63.45 = &pound;143.43.</div>
   </div>
 
   <div class="table-card">
@@ -241,7 +245,7 @@
       <tr><td>Loan from Roland for lawyers and fees<span class="small">£423 received, spent on solicitor (£143) and court fees (£280)</span></td><td class="money">+£423 / −£423</td></tr>
       <tr><td>Marketing and operations</td><td class="money minus">−£250.00</td></tr>
       <tr><td>VAT to the tax office (21% on Skycop's share)</td><td class="money minus">−£163.80</td></tr>
-      <tr><td>Repaid to Roland with interest and fee</td><td class="money minus">−£525.93</td></tr>
+      <tr><td>Repaid to Roland with interest and fee<span class="small">court fees and legal fees returned by the court go fully to repayment, plus 50% of Skycop&rsquo;s share (&pound;130 of &pound;260) per won case</span></td><td class="money minus">−£525.93</td></tr>
       <tr class="total"><td>Skycop profit</td><td class="money">£85.27</td></tr>
     </table>
   </div>
