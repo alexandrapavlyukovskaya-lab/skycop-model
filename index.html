@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the money works in 5 flight compensation cases</title>
+<style>
+  :root{
+    --green:#27A959; --green-dark:#157A3F; --green-mid:#6FCF97;
+    --green-tint:#E9F7EF; --green-stripe:#F3FAF5;
+    --ink:#2B2B2B; --muted:#5F6B63; --line:#CDE8D8;
+    --plus:#157A3F; --minus:#B3261E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:#FFFFFF; color:var(--ink);
+    font-family:'Segoe UI', Verdana, Arial, sans-serif;
+    font-size:20px; line-height:1.65;
+    padding:32px 16px 60px;
+  }
+  .wrap{max-width:980px; margin:0 auto;}
+  .logo{margin-bottom:26px;}
+  .logo img{height:52px; width:auto; display:block;}
+  h1,h2{font-weight:800; line-height:1.2; text-transform:uppercase; letter-spacing:.3px;}
+  h1{font-size:40px; margin-bottom:22px;}
+  h1 .g, h2 .g{color:var(--green);}
+  h2{font-size:28px; margin:56px 0 20px;}
+  h2::after{content:''; display:block; width:88px; height:5px; background:var(--green); border-radius:3px; margin-top:8px;}
+  .money{font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:bold;}
+  .plus{color:var(--plus);} .minus{color:var(--minus);}
+
+  /* Example description */
+  .example{background:var(--green-tint); border:2px solid var(--green); border-radius:16px; padding:22px 24px; margin-bottom:8px;}
+  .example b{color:var(--green-dark);}
+  .example ul{margin:10px 0 0 26px;}
+  .example li{margin-bottom:6px;}
+
+  /* Split of one won case */
+  .split{background:#fff; border:2px solid var(--line); border-radius:16px; padding:28px 22px; text-align:center;}
+  .split .from{font-size:22px;}
+  .split .big{font-size:56px; font-weight:800; color:var(--green); margin:6px 0 2px;}
+  .split .arrows{display:flex; justify-content:center; gap:70px; font-size:34px; color:var(--green-mid); margin:4px 0;}
+  .split .halves{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:6px;}
+  .half{border-radius:12px; padding:14px 28px; min-width:230px; background:var(--green-tint); border:2px solid var(--green);}
+  .half .who{font-size:19px; color:var(--green-dark); font-weight:600;}
+  .half .sum{font-size:36px; font-weight:800; color:var(--green-dark);}
+
+  /* Timeline */
+  .step{display:flex; gap:18px; margin-bottom:18px;}
+  .badge{
+    flex:0 0 92px; height:92px; border-radius:50%;
+    background:var(--green); color:#fff;
+    font-size:30px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step-body{background:var(--green-stripe); border:2px solid var(--line); border-radius:14px; padding:16px 20px; flex:1;}
+  .step-body b{font-size:21px;}
+  .step-body p{font-size:18px; margin-top:4px;}
+  .tag{display:inline-block; font-size:15px; font-weight:600; padding:2px 14px; border-radius:999px; margin-top:8px; margin-right:6px; border:2px solid;}
+  .t-win{color:var(--green-dark); border-color:var(--green); background:#fff;}
+  .t-lose{color:var(--minus); border-color:var(--minus); background:#fff;}
+  .t-pay{color:#fff; border-color:var(--green-dark); background:var(--green-dark);}
+
+  /* Full monthly tables */
+  .table-card{border:2px solid var(--green); border-radius:16px; overflow:hidden; margin-bottom:30px; background:#fff;}
+  .table-card .t-head{background:var(--green); color:#fff; padding:12px 20px; font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:.3px;}
+  .scroll{overflow-x:auto;}
+  table.cf{width:100%; border-collapse:collapse; font-size:17px; min-width:720px;}
+  table.cf th{background:var(--green-mid); color:var(--ink); font-weight:700; padding:9px 12px; text-align:right; white-space:nowrap;}
+  table.cf th:first-child{text-align:left;}
+  table.cf td{padding:9px 12px; border-top:1.5px solid var(--green-tint); text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  table.cf td:first-child{text-align:left; white-space:normal; min-width:220px;}
+  table.cf tr:nth-child(even) td{background:var(--green-stripe);}
+  table.cf tr.net td{border-top:3px solid var(--green-dark); background:var(--green-tint); font-weight:800;}
+  table.cf tr.run td{background:var(--green-tint); font-weight:700; color:var(--green-dark);}
+  table.cf td.neg{color:var(--minus);}
+  table.cf td.tot{font-weight:800;}
+
+  /* Summary cards */
+  .card{border-radius:16px; border:2px solid var(--green); overflow:hidden; margin-bottom:26px; background:#fff;}
+  .card-head{padding:14px 22px; background:var(--green); color:#fff;}
+  .card-head b{font-size:25px; text-transform:uppercase; letter-spacing:.3px;}
+  .card-head span{display:block; font-size:16px; opacity:.95;}
+  table.sum{width:100%; border-collapse:collapse; font-size:19px;}
+  table.sum td{padding:11px 22px; border-top:1.5px solid var(--green-tint); vertical-align:top;}
+  table.sum tr:nth-child(even) td{background:var(--green-stripe);}
+  table.sum td:last-child{text-align:right; white-space:nowrap;}
+  table.sum tr.total td{border-top:3px solid var(--green-dark); background:var(--green-tint); font-size:23px; font-weight:800; padding:14px 22px; color:var(--green-dark);}
+  .small{font-size:15.5px; color:var(--muted); display:block; line-height:1.4; font-weight:normal;}
+  .card.gov{border-color:var(--green-mid);}
+  .card.gov .card-head{background:var(--green-mid); color:var(--ink);}
+  .card.gov table.sum tr.total td{color:var(--ink); border-top-color:var(--green-mid);}
+
+  @media (max-width:600px){
+    body{font-size:18px;}
+    h1{font-size:30px;} h2{font-size:24px;}
+    .badge{flex-basis:70px; height:70px; font-size:22px;}
+    .split .big{font-size:42px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo"><img src="data:image/png;base64,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" alt="Skycop"></div>
+
+  <h1><span class="g">How the money works</span><br>in 5 flight compensation cases</h1>
+
+  <div class="example">
+    <b>This is an example based on 5 cases:</b>
+    <ul>
+      <li>all 5 cases are sent to LBA (letter before action);</li>
+      <li>1 of them (non-Ryanair) is positive — the airline pays after the letter;</li>
+      <li>4 of them go to court (2 non-Ryanair and 2 Ryanair);</li>
+      <li>2 of them are won (1 non-Ryanair and 1 Ryanair) and 2 are lost.</li>
+    </ul>
+  </div>
+
+  <h2><span class="g">What happens</span> month by month</h2>
+
+  <div class="step">
+    <div class="badge">M1</div>
+    <div class="step-body">
+      <b>Start: all 5 cases go to the lawyers</b>
+      <p>APS sends the airline 5 letters before action (LBA). Roland lends <span class="money">£143</span> for the solicitor's work and office needs.</p>
+      <span class="tag t-pay">Roland pays £143</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="badge">M3</div>
+    <div class="step-body">
+      <b>Answers to the letters</b>
+      <p>In Case&nbsp;1 (non-Ryanair) the airline agrees to pay after the letter. Cases 2–5 go to court (2 non-Ryanair and 2 Ryanair) — court fees are due: 4&nbsp;×&nbsp;£70&nbsp;=&nbsp;<span class="money">£280</span>. Roland lends this money too.</p>
+      <span class="tag t-pay">Roland pays £280</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="badge">M5</div>
+    <div class="step-body">
+      <b>First money: Case 1</b>
+      <p>The airline pays <span class="money">£520</span>. The passenger receives <span class="money plus">£260</span>, Skycop keeps £260 and starts repaying Roland.</p>
+      <span class="tag t-win">Case 1 — won by LBA</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="badge">M12</div>
+    <div class="step-body">
+      <b>Court, part one</b>
+      <p>Case&nbsp;2 is won: <span class="money">£520</span> compensation, plus the court returns the £70 fee and £70 of legal costs. Case&nbsp;3 is lost: its £70 fee is gone.</p>
+      <span class="tag t-win">Case 2 — won</span>
+      <span class="tag t-lose">Case 3 — lost</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="badge">M14</div>
+    <div class="step-body">
+      <b>Court, part two. The finish</b>
+      <p>Case&nbsp;4 is won (the same <span class="money">£520&nbsp;+&nbsp;70&nbsp;+&nbsp;70</span>), Case&nbsp;5 is lost (£70 fee gone). Skycop settles with Roland in full — with interest and the financing fee.</p>
+      <span class="tag t-win">Case 4 — won</span>
+      <span class="tag t-lose">Case 5 — lost</span>
+    </div>
+  </div>
+
+  <h2><span class="g">Full monthly</span> cashflow tables</h2>
+
+  <div class="table-card">
+    <div class="t-head">Roland cashflow</div>
+    <div class="scroll">
+    <table class="cf">
+      <tr><th>Item</th><th>M1</th><th>M3</th><th>M5</th><th>M12</th><th>M14</th><th>Total</th></tr>
+      <tr><td>Fund solicitor's fees</td><td class="neg">−143</td><td></td><td></td><td></td><td></td><td class="tot neg">−143</td></tr>
+      <tr><td>Fund court fees</td><td></td><td class="neg">−280</td><td></td><td></td><td></td><td class="tot neg">−280</td></tr>
+      <tr><td>Principal repaid</td><td></td><td></td><td>130</td><td>252.5</td><td>40.5</td><td class="tot">423</td></tr>
+      <tr><td>Interest (8% per year)</td><td></td><td></td><td></td><td></td><td>39.48</td><td class="tot">39.48</td></tr>
+      <tr><td>Financing fee (15%)</td><td></td><td></td><td></td><td></td><td>63.45</td><td class="tot">63.45</td></tr>
+      <tr class="net"><td>Net this month</td><td class="neg">−143</td><td class="neg">−280</td><td>130</td><td>252.5</td><td>143.43</td><td class="tot">102.93</td></tr>
+      <tr class="run"><td>Running total</td><td class="neg">−143</td><td class="neg">−423</td><td class="neg">−293</td><td class="neg">−40.5</td><td>102.93</td><td></td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="t-head">Skycop cashflow</div>
+    <div class="scroll">
+    <table class="cf">
+      <tr><th>Item</th><th>M0</th><th>M1</th><th>M3</th><th>M5</th><th>M12</th><th>M14</th><th>Total</th></tr>
+      <tr><td>Borrow from Roland</td><td></td><td>143</td><td>280</td><td></td><td></td><td></td><td class="tot">423</td></tr>
+      <tr><td>Compensation collected</td><td></td><td></td><td></td><td>520</td><td>520</td><td>520</td><td class="tot">1560</td></tr>
+      <tr><td>Paid to passengers</td><td></td><td></td><td></td><td class="neg">−260</td><td class="neg">−260</td><td class="neg">−260</td><td class="tot neg">−780</td></tr>
+      <tr><td>Court fee returned</td><td></td><td></td><td></td><td></td><td>70</td><td>70</td><td class="tot">140</td></tr>
+      <tr><td>Legal fee share returned (75%)</td><td></td><td></td><td></td><td></td><td>52.5</td><td>52.5</td><td class="tot">105</td></tr>
+      <tr><td>Pay solicitor's fees</td><td></td><td class="neg">−143</td><td></td><td></td><td></td><td></td><td class="tot neg">−143</td></tr>
+      <tr><td>Pay court fees</td><td></td><td></td><td class="neg">−280</td><td></td><td></td><td></td><td class="tot neg">−280</td></tr>
+      <tr><td>Marketing + operations</td><td class="neg">−250</td><td></td><td></td><td></td><td></td><td></td><td class="tot neg">−250</td></tr>
+      <tr><td>VAT (21% on Skycop share)</td><td></td><td></td><td></td><td class="neg">−54.6</td><td class="neg">−54.6</td><td class="neg">−54.6</td><td class="tot neg">−163.8</td></tr>
+      <tr><td>Repay Roland</td><td></td><td></td><td></td><td class="neg">−130</td><td class="neg">−252.5</td><td class="neg">−143.43</td><td class="tot neg">−525.93</td></tr>
+      <tr class="net"><td>Net this month</td><td class="neg">−250</td><td>0</td><td>0</td><td>75.4</td><td>75.4</td><td>184.47</td><td class="tot">85.27</td></tr>
+      <tr class="run"><td>Running total</td><td class="neg">−250</td><td class="neg">−250</td><td class="neg">−250</td><td class="neg">−174.6</td><td class="neg">−99.2</td><td>85.27</td><td></td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="t-head">APS cashflow</div>
+    <div class="scroll">
+    <table class="cf">
+      <tr><th>Item</th><th>M1</th><th>M3</th><th>M5</th><th>M12</th><th>M14</th><th>Total</th></tr>
+      <tr><td>Office funding received</td><td>143</td><td></td><td></td><td></td><td></td><td class="tot">143.00</td></tr>
+      <tr><td>Office running cost</td><td class="neg">−130</td><td></td><td></td><td></td><td></td><td class="tot neg">−130.00</td></tr>
+      <tr><td>Court fees received</td><td></td><td>280</td><td></td><td>70</td><td>70</td><td class="tot">420.00</td></tr>
+      <tr><td>Court fees paid / returned</td><td></td><td class="neg">−280</td><td></td><td class="neg">−70</td><td class="neg">−70</td><td class="tot neg">−420.00</td></tr>
+      <tr><td>Legal fee kept (25%)</td><td></td><td></td><td></td><td>17.5</td><td>17.5</td><td class="tot">35.00</td></tr>
+      <tr><td>Profit tax (25%)</td><td class="neg">−3.25</td><td></td><td></td><td class="neg">−4.38</td><td class="neg">−4.38</td><td class="tot neg">−12.00</td></tr>
+      <tr class="net"><td>Net this month</td><td>9.75</td><td>0</td><td>0</td><td>13.13</td><td>13.13</td><td class="tot">36.00</td></tr>
+      <tr class="run"><td>Running total</td><td>9.75</td><td>9.75</td><td>9.75</td><td>22.88</td><td>36.00</td><td></td></tr>
+    </table>
+    </div>
+  </div>
+
+  <h2><span class="g">Summary:</span> who got what</h2>
+
+  <div class="card">
+    <div class="card-head"><b>Passengers</b><span>5 people: 3 cases won, 2 lost</span></div>
+    <table class="sum">
+      <tr><td>Airline paid in total<span class="small">3 won cases × £520</span></td><td class="money">£1,560</td></tr>
+      <tr><td>Passengers of the lost cases<span class="small">receive nothing, but pay nothing either</span></td><td class="money">£0</td></tr>
+      <tr class="total"><td>Received by passengers</td><td class="money">£780</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><b>Skycop</b><span>runs the claims and collects the compensation</span></div>
+    <table class="sum">
+      <tr><td>Compensation collected</td><td class="money plus">+£1,560.00</td></tr>
+      <tr><td>Paid to passengers (their half)</td><td class="money minus">−£780.00</td></tr>
+      <tr><td>Court returned fees and legal costs<span class="small">2 won court cases: £140 court fees + £105 legal fee share (75%)</span></td><td class="money plus">+£245.00</td></tr>
+      <tr><td>Loan from Roland for lawyers and fees<span class="small">£423 received, spent on solicitor (£143) and court fees (£280)</span></td><td class="money">+£423 / −£423</td></tr>
+      <tr><td>Marketing and operations</td><td class="money minus">−£250.00</td></tr>
+      <tr><td>VAT to the tax office (21% on Skycop's share)</td><td class="money minus">−£163.80</td></tr>
+      <tr><td>Repaid to Roland with interest and fee</td><td class="money minus">−£525.93</td></tr>
+      <tr class="total"><td>Skycop profit</td><td class="money">£85.27</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><b>APS</b><span>the law firm</span></div>
+    <table class="sum">
+      <tr><td>Received for office needs</td><td class="money plus">+£143.00</td></tr>
+      <tr><td>Office running cost</td><td class="money minus">−£130.00</td></tr>
+      <tr><td>Legal fee share kept (25%)<span class="small">out of £140 legal costs awarded by the court; court fees only pass through APS in transit</span></td><td class="money plus">+£35.00</td></tr>
+      <tr><td>Profit tax (25% of £48)</td><td class="money minus">−£12.00</td></tr>
+      <tr class="total"><td>APS net profit</td><td class="money">£36.00</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><b>Roland</b><span>the investor</span></div>
+    <table class="sum">
+      <tr><td>Lent out<span class="small">£143 in month 1 + £280 in month 3</span></td><td class="money minus">−£423.00</td></tr>
+      <tr><td>Received back<span class="small">principal £423 + interest at 8% per year (£39.48) + 15% financing fee (£63.45)</span></td><td class="money plus">+£525.93</td></tr>
+      <tr class="total"><td>Roland's profit over 14 months</td><td class="money">£102.93</td></tr>
+    </table>
+  </div>
+
+  <div class="card gov">
+    <div class="card-head"><b>Government</b><span>taxes collected from the participants</span></div>
+    <table class="sum">
+      <tr><td>VAT from Skycop</td><td class="money">£163.80</td></tr>
+      <tr><td>Profit tax from APS</td><td class="money">£12.00</td></tr>
+      <tr class="total"><td>Total taxes</td><td class="money">£175.80</td></tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
